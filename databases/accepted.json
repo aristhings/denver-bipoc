@@ -1,0 +1,16 @@
+{
+  "docs": [
+    {
+      "id": "Lunr",
+      "text": "Like Solr, but much smaller, and not as bright."
+    },
+    {
+      "id": "React",
+      "text": "A JavaScript library for building user interfaces."
+    },
+    {
+      "id": "Lodash",
+      "text": "A modern JavaScript utility library delivering modularity, performance & extras."
+    }
+  ]
+}

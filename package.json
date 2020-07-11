@@ -1,0 +1,24 @@
+{
+  "name": "denver-bipoc-map",
+  "version": "1.0.0",
+  "description": "A map of independently, BIPOC-owned businesses in the Denver Area.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/aristhings/denver-bipoc.git"
+  },
+  "author": "Ari Gibson",
+  "license": "GPL-3.0-or-later",
+  "bugs": {
+    "url": "https://github.com/aristhings/denver-bipoc/issues"
+  },
+  "homepage": "https://github.com/aristhings/denver-bipoc#readme",
+  "dependencies": {
+    "express": "^4.17.1",
+    "lowdb": "^1.0.0",
+    "nodemon": "^2.0.4"
+  }
+}
