@@ -13,17 +13,27 @@ const accepted = low(dbAccepted);
 const rejected = low(dbRejected);
 const review = low(dbReview);
 
-api.get("/api/get-businesses", function (req, res) {
-  res.json(accepted.getState("docs"));
-});
+const databases = [accepted, rejected, review];
 
-api.get("/api/business/:id", function (req, res) {
-  var val = accepted.get("docs").find({ id: req.params.id }).value();
-  res.json(val);
-});
-
-api.post("/api/business", function (req, res) {
-  
-})
-
-module.exports = api;
+databases.forEach((db) =>
+  db.defaults({
+    food: [
+      {
+        place_id: "",
+        name: "",
+        address: "",
+        phone: "",
+        type: "",
+        website: "",
+        google_url: "",
+      }
+    ],
+    retail: [],
+    heath: [],
+    fitness: [],
+    beauty: [],
+    creative: [],
+    orgs: [],
+    misc: [],
+  })
+);
