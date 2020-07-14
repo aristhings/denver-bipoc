@@ -16,6 +16,6 @@ app.get("/api", (req, res) => {
   res.sendFile(__dirname + "/views/api.html");
 });
 
-app.listen(2002, () => {
-  console.log(`Server is now listening on port 2002`);
+app.listen(80, () => {
+  console.log(`Server is now listening on port 80`);
 });
