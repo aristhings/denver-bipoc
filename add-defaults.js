@@ -26,14 +26,84 @@ databases.forEach((db) =>
         type: "",
         website: "",
         google_url: "",
-      }
+      },
     ],
-    retail: [],
-    heath: [],
-    fitness: [],
-    beauty: [],
-    creative: [],
-    orgs: [],
-    misc: [],
-  })
+    retail: [
+      {
+        place_id: "",
+        name: "",
+        address: "",
+        phone: "",
+        type: "",
+        website: "",
+        google_url: "",
+      },
+    ],
+    heath: [
+      {
+        place_id: "",
+        name: "",
+        address: "",
+        phone: "",
+        type: "",
+        website: "",
+        google_url: "",
+      },
+    ],
+    fitness: [
+      {
+        place_id: "",
+        name: "",
+        address: "",
+        phone: "",
+        type: "",
+        website: "",
+        google_url: "",
+      },
+    ],
+    beauty: [
+      {
+        place_id: "",
+        name: "",
+        address: "",
+        phone: "",
+        type: "",
+        website: "",
+        google_url: "",
+      },
+    ],
+    creative: [
+      {
+        place_id: "",
+        name: "",
+        address: "",
+        phone: "",
+        type: "",
+        website: "",
+        google_url: "",
+      },
+    ],
+    orgs: [
+      {
+        place_id: "",
+        name: "",
+        address: "",
+        phone: "",
+        type: "",
+        website: "",
+        google_url: "",
+      },
+    ],
+    misc: [
+      {
+        place_id: "",
+        name: "",
+        address: "",
+        phone: "",
+        type: "",
+        website: "",
+        google_url: "",
+      },
+    ],
+  }).write()
 );
