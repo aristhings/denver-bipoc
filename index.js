@@ -16,6 +16,6 @@ app.get("/api", (req, res) => {
   res.sendFile(__dirname + "/views/api.html");
 });
 
-app.listen(443, () => {
-  console.log(`Server is now listening on port 443`);
+app.listen(process.env.PORT || 2002, () => {
+  console.log(`Server is now listening`);
 });
