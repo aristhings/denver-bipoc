@@ -2,6 +2,8 @@ const express = require("express");
 const app = express();
 const api = require("./routes/api.js");
 
+var port = process.env.PORT || 2002;
+
 app.use(api);
 
 app.get("/", (req, res) => {
@@ -16,6 +18,6 @@ app.get("/api", (req, res) => {
   res.sendFile(__dirname + "/views/api.html");
 });
 
-app.listen(process.env.PORT || 2002, () => {
-  console.log(`Server is now listening`);
+var listener = app.listen(port, () => {
+  console.log(`Server is now listening on port ${port}.`);
 });
