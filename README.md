@@ -1,5 +1,5 @@
 # Denver BIPOC Businesses
-A map of independently, BIPOC-owned businesses in the Denver Area.
+A map of independently, BIPOC-owned businesses in the Denver Area. Will soon include the LA area as well!
 
 Current Website: https://denver-bipoc.herokuapp.com/
 
