@@ -1,0 +1,210 @@
+openapi: 3.0.0
+tags: [businesses, poc, social issues, social justice, small business, local business, people of color]
+info:
+  title: Denver BIPOC Businesses
+  version: '1.0'
+  description: 'A map of independently, BIPOC-owned businesses in the Denver Area. Will soon include the LA area as well!'
+  contact:
+    name: Ari Gibson
+    email: arimgibson@gmail.com
+    url: 'https://github.com/aristhings/denver-bipoc'
+  license:
+    name: GNU GPL
+    url: 'https://github.com/aristhings/denver-bipoc/blob/master/LICENSE'
+servers:
+  - url: 'https://denver-bipoc.herokuapp.com/api'
+paths:
+  '/businesses/{category}':
+    get:
+      summary: List Businesses
+      tags: []
+      operationId: get-businesses
+      description: Returns a categorized list of all businesses in the database.
+      parameters: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                '':
+                  type: string
+            examples: {}
+        description: ''
+    parameters:
+      - schema:
+          type: string
+        name: category
+        in: path
+        required: true
+  /businesses/all:
+    get:
+      summary: Your GET endpoint
+      tags: []
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  food:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        place_id:
+                          type: string
+                        name:
+                          type: string
+                        address:
+                          type: string
+                        phone:
+                          type: string
+                        type:
+                          type: string
+                        website:
+                          type: string
+                        google_url:
+                          type: string
+                  retail:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        place_id:
+                          type: string
+                        name:
+                          type: string
+                        address:
+                          type: string
+                        phone:
+                          type: string
+                        type:
+                          type: string
+                        website:
+                          type: string
+                        google_url:
+                          type: string
+                  health:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        place_id:
+                          type: string
+                        name:
+                          type: string
+                        address:
+                          type: string
+                        phone:
+                          type: string
+                        type:
+                          type: string
+                        website:
+                          type: string
+                        google_url:
+                          type: string
+                  fitness:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        place_id:
+                          type: string
+                        name:
+                          type: string
+                        address:
+                          type: string
+                        phone:
+                          type: string
+                        type:
+                          type: string
+                        website:
+                          type: string
+                        google_url:
+                          type: string
+                  beauty:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        place_id:
+                          type: string
+                        name:
+                          type: string
+                        address:
+                          type: string
+                        phone:
+                          type: string
+                        type:
+                          type: string
+                        website:
+                          type: string
+                        google_url:
+                          type: string
+                  creative:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        place_id:
+                          type: string
+                        name:
+                          type: string
+                        address:
+                          type: string
+                        phone:
+                          type: string
+                        type:
+                          type: string
+                        website:
+                          type: string
+                        google_url:
+                          type: string
+                  orgs:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        place_id:
+                          type: string
+                        name:
+                          type: string
+                        address:
+                          type: string
+                        phone:
+                          type: string
+                        type:
+                          type: string
+                        website:
+                          type: string
+                        google_url:
+                          type: string
+                  misc:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        place_id:
+                          type: string
+                        name:
+                          type: string
+                        address:
+                          type: string
+                        phone:
+                          type: string
+                        type:
+                          type: string
+                        website:
+                          type: string
+                        google_url:
+                          type: string
+              examples: {}
+      operationId: get-businesses-all
+      description: 'Returns a JSON list of all businesses in database, organized by category. All data is returned in an object, with arrays for each category. Each category has an object for each entry, which consists of the fields _place\_id, name, address, phone, type, website, and google\_url_'
+      parameters: []
+components:
+  schemas: {}
+  securitySchemes: {}
