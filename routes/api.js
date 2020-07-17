@@ -14,6 +14,7 @@ const rejected = low(dbRejected);
 const review = low(dbReview);
 
 var acceptedQueryParams = ["id", "name", "address", "phone", "type", "website"];
+var acceptedQueryCategories = ["food", "retail", "health", "fitness", "beauty", "creative", "orgs", "misc"]
 
 api.get("/api/businesses/all", function (req, res) {
   res.json(accepted.getState());
