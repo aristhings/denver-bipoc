@@ -1,6 +1,6 @@
 const express = require("express");
 const app = express();
-const api = require("./routes/api.js");
+const api = require("./routes/apiGET.js");
 
 var port = process.env.PORT || 2002;
 

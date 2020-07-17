@@ -1,6 +1,7 @@
 const express = require("express");
 const api = express.Router();
 const app = express();
+const axios = require("axios");
 
 const low = require("lowdb");
 const FileSync = require("lowdb/adapters/FileSync");
@@ -14,7 +15,16 @@ const rejected = low(dbRejected);
 const review = low(dbReview);
 
 var acceptedQueryParams = ["id", "name", "address", "phone", "type", "website"];
-var acceptedQueryCategories = ["food", "retail", "health", "fitness", "beauty", "creative", "orgs", "misc"]
+var acceptedQueryCategories = [
+  "food",
+  "retail",
+  "health",
+  "fitness",
+  "beauty",
+  "creative",
+  "orgs",
+  "misc",
+];
 
 api.get("/api/businesses/all", function (req, res) {
   res.json(accepted.getState());
@@ -68,6 +78,36 @@ api.get("/api/business/", function (req, res) {
   response();
 });
 
-api.post("/api/business", function (req, res) {});
+api.post("/api/business/id/:id", function (req, res) {
+  axios
+    .get(
+      `https://maps.googleapis.com/maps/api/place/details/json?place_id=${req.params.id}&fields=name,formatted_address,formatted_phone_number,types,website,url&key=AIzaSyDRjM-tDxDM3Ji0YUm-b-KUU_aPo4nmweM`,
+      {
+        method: "GET",
+        headers: { "Content-Type": "application/json" },
+      }
+    )
+    .then((place) => {
+      review.get("food").push({
+        place_id: req.params.id,
+        name: place.data.result.name,
+        address: place.data.result.address,
+        phone: place.data.result.formatted_phone_number,
+        type: place.data.result.types,
+        website: place.data.result.website,
+        google_url: place.data.result.url,
+      }).write();
+      res.status(200).json({
+        place_id: req.params.id,
+        name: place.data.result.name,
+        address: place.data.result.address,
+        phone: place.data.result.formatted_phone_number,
+        type: place.data.result.types,
+        website: place.data.result.website,
+        google_url: place.data.result.url,
+      });
+    })
+    .catch((err) => console.log(err));
+});
 
 module.exports = api;
