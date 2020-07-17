@@ -27,30 +27,38 @@ var acceptedQueryCategories = [
 ];
 
 api.post("/api/business/id/:id", function (req, res) {
-  https.get(
-    `https://maps.googleapis.com/maps/api/place/details/json?place_id=${req.params.id}&fields=name,formatted_address,formatted_phone_number,types,website,url&key=AIzaSyDRjM-tDxDM3Ji0YUm-b-KUU_aPo4nmweM`,
-    (place) => {
-      review.get("food").push({
-        place_id: res.params.id,
-        name: place.result.name,
-        address: place.result.address,
-        phone: place.result.formatted_phone_number,
-        type: place.result.types,
-        website: place.results.website,
-        google_url: place.result.url,
-      });
-
+  axios
+    .get(
+      `https://maps.googleapis.com/maps/api/place/details/json?place_id=${req.params.id}&fields=name,formatted_address,formatted_phone_number,types,website,url&key=AIzaSyDRjM-tDxDM3Ji0YUm-b-KUU_aPo4nmweM`,
+      {
+        method: "GET",
+        headers: { "Content-Type": "application/json" },
+      }
+    )
+    .then((place) => {
+      review
+        .get("food")
+        .push({
+          place_id: req.params.id,
+          name: place.data.result.name,
+          address: place.data.result.address,
+          phone: place.data.result.formatted_phone_number,
+          type: place.data.result.types,
+          website: place.data.result.website,
+          google_url: place.data.result.url,
+        })
+        .write();
       res.status(200).json({
-        place_id: res.params.id,
-        name: place.result.name,
-        address: place.result.address,
-        phone: place.result.formatted_phone_number,
-        type: place.result.types,
-        website: place.results.website,
-        google_url: place.result.url,
+        place_id: req.params.id,
+        name: place.data.result.name,
+        address: place.data.result.address,
+        phone: place.data.result.formatted_phone_number,
+        type: place.data.result.types,
+        website: place.data.result.website,
+        google_url: place.data.result.url,
       });
-    }
-  );
+    })
+    .catch((err) => console.log(err));
 });
 
 module.exports = api;

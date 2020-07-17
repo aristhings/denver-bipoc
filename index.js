@@ -1,23 +1,15 @@
 const express = require("express");
 const app = express();
-const api = require("./routes/apiGET.js");
+const apiGET = require("./routes/apiGET.js");
+const apiPOST = require("./routes/apiPOST.js");
+const serveHTML = require("./routes/serveHTML.js");
 
 var port = process.env.PORT || 2002;
 
-app.use(api);
+app.use(serveHTML);
+app.use(apiGET);
+app.use(apiPOST);
 
-app.get("/", (req, res) => {
-  res.sendFile(__dirname + "/views/index.html");
-});
-
-app.get("/about", (req, res) => {
-  res.sendFile(__dirname + "/views/about.html");
-});
-
-app.get("/api", (req, res) => {
-  res.sendFile(__dirname + "/views/api.html");
-});
-
-var listener = app.listen(port, () => {
+app.listen(port, () => {
   console.log(`Server is now listening on port ${port}.`);
 });
