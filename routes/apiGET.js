@@ -1,6 +1,5 @@
 const express = require("express");
 const api = express.Router();
-const axios = require("axios");
 
 const low = require("lowdb");
 const FileSync = require("lowdb/adapters/FileSync");
