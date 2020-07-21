@@ -53,7 +53,6 @@ api.post("/api/business/id-pass/:pass/:id", function (req, res) {
       )
       .then((place) => {
         accepted
-          .get("businesses")
           .insertOne({
             _id: req.params.id,
             name: place.data.result.name,
