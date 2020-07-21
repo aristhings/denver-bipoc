@@ -26,8 +26,7 @@ api.post("/api/business/id/:id", function (req, res) {
           type: place.data.result.types,
           website: place.data.result.website,
           google_url: place.data.result.url,
-        })
-        .write();
+        });
       res.status(200).json({
         _id: req.params.id,
         name: place.data.result.name,
@@ -61,8 +60,7 @@ api.post("/api/business/id-pass/:pass/:id", function (req, res) {
             type: place.data.result.types,
             website: place.data.result.website,
             google_url: place.data.result.url,
-          })
-          .write();
+          });
         res.status(200).json({
           _id: req.params.id,
           name: place.data.result.name,
