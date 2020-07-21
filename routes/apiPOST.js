@@ -1,30 +1,11 @@
 const express = require("express");
+const mongo = require("../databaseRelated/initMongoDB.js").getDB();
 const api = express.Router();
-const app = express();
 const axios = require("axios");
 
-const low = require("lowdb");
-const FileSync = require("lowdb/adapters/FileSync");
-
-const dbAccepted = new FileSync("./databases/accepted.json");
-const dbRejected = new FileSync("./databases/rejected.json");
-const dbReview = new FileSync("./databases/review.json");
-
-const accepted = low(dbAccepted);
-const rejected = low(dbRejected);
-const review = low(dbReview);
-
-var acceptedQueryParams = ["id", "name", "address", "phone", "type", "website"];
-var acceptedQueryCategories = [
-  "food",
-  "retail",
-  "health",
-  "fitness",
-  "beauty",
-  "creative",
-  "orgs",
-  "misc",
-];
+const accepted = mongo.collection("accepted");
+const rejected = mongo.collection("rejected");
+const review = mongo.collection("review");
 
 api.post("/api/business/id/:id", function (req, res) {
   axios
@@ -37,9 +18,8 @@ api.post("/api/business/id/:id", function (req, res) {
     )
     .then((place) => {
       review
-        .get("businesses")
-        .push({
-          place_id: req.params.id,
+        .insertOne({
+          _id: req.params.id,
           name: place.data.result.name,
           address: place.data.result.address,
           phone: place.data.result.formatted_phone_number,
@@ -49,7 +29,7 @@ api.post("/api/business/id/:id", function (req, res) {
         })
         .write();
       res.status(200).json({
-        place_id: req.params.id,
+        _id: req.params.id,
         name: place.data.result.name,
         address: place.data.result.address,
         phone: place.data.result.formatted_phone_number,
@@ -74,8 +54,8 @@ api.post("/api/business/id-pass/:pass/:id", function (req, res) {
       .then((place) => {
         accepted
           .get("businesses")
-          .push({
-            place_id: req.params.id,
+          .insertOne({
+            _id: req.params.id,
             name: place.data.result.name,
             address: place.data.result.address,
             phone: place.data.result.formatted_phone_number,
@@ -85,7 +65,7 @@ api.post("/api/business/id-pass/:pass/:id", function (req, res) {
           })
           .write();
         res.status(200).json({
-          place_id: req.params.id,
+          _id: req.params.id,
           name: place.data.result.name,
           address: place.data.result.address,
           phone: place.data.result.formatted_phone_number,
@@ -95,7 +75,9 @@ api.post("/api/business/id-pass/:pass/:id", function (req, res) {
         });
       })
       .catch((err) => console.log(err));
-  } else {res.status(401).send("Invalid administrator password.")}
+  } else {
+    res.status(403).send("Invalid administrator password.");
+  }
 });
 
 module.exports = api;

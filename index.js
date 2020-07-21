@@ -1,15 +1,26 @@
 const express = require("express");
+const mongo = require("./databaseRelated/initMongoDB.js");
 const app = express();
-const apiGET = require("./routes/apiGET.js");
-const apiPOST = require("./routes/apiPOST.js");
-const serveHTML = require("./routes/serveHTML.js");
 
 var port = process.env.PORT || 2002;
 
-app.use(serveHTML);
-app.use(apiGET);
-app.use(apiPOST);
+mongo.connectToServer(function (err, client) {
+  if (err) console.error(err);
+  else {
+    const serveHTML = require("./routes/serveHTML.js");
+    const apiGET = require("./routes/apiGET.js");
+    // const apiPOST = require("./routes/apiPOST.js");
 
-app.listen(port, () => {
-  console.log(`Server is now listening on port ${port}.`);
+    app.use(serveHTML);
+    app.use(apiGET);
+    // app.use(apiPOST);
+
+    // app.get("/", () => {
+    //   console.log("I work");
+    // });
+
+    app.listen(port, () => {
+      console.log(`Server is now listening on port ${port}.`);
+    });
+  }
 });

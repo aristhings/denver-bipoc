@@ -1,36 +1,43 @@
 const express = require("express");
+const mongo = require("../databaseRelated/initMongoDB.js").getDB();
 const api = express.Router();
 
-const low = require("lowdb");
-const FileSync = require("lowdb/adapters/FileSync");
-
-const dbAccepted = new FileSync("./databases/accepted.json");
-const dbRejected = new FileSync("./databases/rejected.json");
-const dbReview = new FileSync("./databases/review.json");
-
-const accepted = low(dbAccepted);
-const rejected = low(dbRejected);
-const review = low(dbReview);
+const accepted = mongo.collection("accepted");
+const rejected = mongo.collection("rejected");
+const review = mongo.collection("review");
 
 var acceptedQueryParams = ["id", "name", "address", "phone", "type", "website"];
-var acceptedQueryCategories = [
-  "food",
-  "retail",
-  "health",
-  "fitness",
-  "beauty",
-  "creative",
-  "orgs",
-  "misc",
-];
 
 api.get("/api/businesses/all", function (req, res) {
-  res.json(accepted.getState());
+  accepted
+    .find()
+    .toArray()
+    .then((data) => {
+      res.status(200).json(data);
+    })
+    .catch((err) =>
+      res
+        .status(500)
+        .send(
+          `An error has occured. If it looks like this error is on our side, please contact arimgibson@gmail.com with the error details so they can look into it. \n ${err}`
+        )
+    );
 });
 
-api.get("/api/businesses/:category", function (req, res) {
-  var response = accepted.get(req.params.category).value();
-  res.status(200).json(response);
+api.get("/api/businesses/types/:type", function (req, res) {
+  accepted
+    .find({ types: [req.params.type] })
+    .toArray()
+    .then((data) => {
+      res.status(200).json(data);
+    })
+    .catch((err) =>
+      res
+        .status(500)
+        .send(
+          `An error has occured. If it looks like this error is on our side, please contact arimgibson@gmail.com with the error details so they can look into it. \n ${err}`
+        )
+    );
 });
 
 api.get("/api/business/", function (req, res) {
