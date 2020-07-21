@@ -9,15 +9,11 @@ mongo.connectToServer(function (err, client) {
   else {
     const serveHTML = require("./routes/serveHTML.js");
     const apiGET = require("./routes/apiGET.js");
-    // const apiPOST = require("./routes/apiPOST.js");
+    const apiPOST = require("./routes/apiPOST.js");
 
     app.use(serveHTML);
     app.use(apiGET);
-    // app.use(apiPOST);
-
-    // app.get("/", () => {
-    //   console.log("I work");
-    // });
+    app.use(apiPOST);
 
     app.listen(port, () => {
       console.log(`Server is now listening on port ${port}.`);
