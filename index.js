@@ -18,9 +18,6 @@ mongo.connectToServer(function (err, client) {
     app.use(apiGET);
     app.use(apiPOST);
 
-    app.post("/junk", (req, res) => {
-
-    });
     app.listen(port, () => {
       console.log(`Server is now listening on port ${port}.`);
     });
