@@ -1,4 +1,5 @@
 const express = require("express");
+const bodyParser = require("body-parser");
 const mongo = require("./databaseRelated/initMongoDB.js");
 const app = express();
 
@@ -11,10 +12,15 @@ mongo.connectToServer(function (err, client) {
     const apiGET = require("./routes/apiGET.js");
     const apiPOST = require("./routes/apiPOST.js");
 
+    app.use(bodyParser.json());
+    app.use(bodyParser.urlencoded({ extended: true }));
     app.use(serveHTML);
     app.use(apiGET);
     app.use(apiPOST);
 
+    app.post("/junk", (req, res) => {
+
+    });
     app.listen(port, () => {
       console.log(`Server is now listening on port ${port}.`);
     });

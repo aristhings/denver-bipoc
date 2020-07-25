@@ -55,7 +55,7 @@ api.post("/api/business/id-pass/:pass/:id", function (req, res) {
           .insertOne({
             _id: req.params.id,
             name: place.data.result.name,
-            address: place.data.result.address,
+            address: place.data.result.formatted_address,
             phone: place.data.result.formatted_phone_number,
             type: place.data.result.types,
             website: place.data.result.website,
