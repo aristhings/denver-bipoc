@@ -39,14 +39,17 @@ api.get("/api/business", function (req, res) {
   var queryKeys = {};
   var error = {};
 
-  if (req.body !== undefined) bodyData();
-  else if (req.query !== undefined) urlData();
+  if (Object.keys(req.body).length !== 0) bodyData();
+  else if (Object.keys(req.query).length !== 0) urlData();
   else res.status(400).send("No query data provided.");
 
   function bodyData() {
     if (req.body.searchType === "exact") searchType = "exact";
     else if (req.body.searchType === "strict") searchType = "strict";
     else searchType = "standard";
+
+    if (req.body.searchOp === "or") searchOp = "or";
+    else searchOp = "and";
 
     if (req.body.id !== undefined) {
       accepted
@@ -70,9 +73,12 @@ api.get("/api/business", function (req, res) {
   }
 
   function urlData() {
-    if (req.query.searchType === "exact") searchType = "exact";
-    else if (req.query.searchType === "strict") searchType = "strict";
+    if (req.query.searchType == "exact") searchType = "exact";
+    else if (req.query.searchType == "strict") searchType = "strict";
     else searchType = "standard";
+
+    if (req.query.searchOp === "or") searchOp = "or";
+    else searchOp = "and";
 
     if (req.query.id !== undefined) {
       accepted
@@ -81,10 +87,11 @@ api.get("/api/business", function (req, res) {
         .then((data) => res.status(200).json(data))
         .catch((err) => sendError(err));
     } else {
+      delete req.query["searchOp"];
+      delete req.query["searchType"];
       for (const key in req.query) {
         if (acceptedQueryParams.includes(key)) {
-          if (key !== "searchOp" || "searchType")
-            queryKeys[key] = req.query[key];
+          queryKeys[key] = req.query[key];
         } else if (!acceptedQueryParams.includes(key)) {
           error[
             key
@@ -108,33 +115,39 @@ api.get("/api/business", function (req, res) {
 
   function search() {
     var queryArray;
-    // prettier-ignore
-    if (searchType === "exact") queryArray = Object.entries(queryKeys).map(([k, v]) => ({ [k]: `/${v}/is` }));
-  // prettier-ignore
-  else if (searchType === "strict") queryArray = Object.entries(queryKeys).map(([k, v]) => ({ [k]: `/.*${v}.*/is` }));
-  else if (searchType === "standard") {
-    var name = { $test: { $search: queryKeys[name] } };
-    delete queryKeys[name];
-    partialArray = Object.entries(queryKeys).map(([k, v]) => ({
-      [k]: `/.*${v}.*/is`,
-    }));
-    partialArray.unshift(name);
-    queryArray = partialArray;
-  } else sendError(err);
+    if (searchType == "exact")
+      queryArray = Object.entries(queryKeys).map(([k, v]) => ({
+        [`"${k}"`]: new RegExp(v, "is"),
+      }));
+    else if (searchType == "strict")
+      queryArray = Object.entries(queryKeys).map(([k, v]) => ({
+        [k]: new RegExp(".*" + v + ".*", "i"),
+      }));
+    else if (searchType == "standard") {
+      var name = { $text: { $search: queryKeys[name] } };
+      delete queryKeys[name];
+      partialArray = Object.entries(queryKeys).map(([k, v]) => ({
+        [`"${k}"`]: new RegExp(`.*${v}.*`, "is"),
+      }));
+      partialArray.unshift(name);
+      queryArray = partialArray;
+    } else sendError("unknown");
 
-    if (searchOp === "and")
-      accepted
-        .find({ $or: queryArray })
-        .toArray()
-        .then((data) => res.status(200).json(data))
-        .catch((err) => sendError(err));
-    if (searchOp === "or")
+    if (searchOp === "and") {
       accepted
         .find({ $and: queryArray })
         .toArray()
         .then((data) => res.status(200).json(data))
         .catch((err) => sendError(err));
-    else sendError(err);
+      console.log(JSON.stringify(queryArray));
+    } else if (searchOp === "or") {
+      accepted
+        .find({ $or: queryArray })
+        .toArray()
+        .then((data) => res.status(200).json(data))
+        .catch((err) => sendError(err));
+      console.log(queryArray);
+    } else sendError("unknown");
   }
 
   function sendError(errorMsg) {
@@ -148,7 +161,7 @@ api.get("/api/business", function (req, res) {
       res
         .status(500)
         .send(
-          `An error has occured. If it looks like this error is on our side, please contact arimgibson@gmail.com with the error details so they can look into it. \n ${err}`
+          `An error has occured. If it looks like this error is on our side, please contact arimgibson@gmail.com with the error details so they can look into it. \n ${errorMsg}`
         );
     }
   }
